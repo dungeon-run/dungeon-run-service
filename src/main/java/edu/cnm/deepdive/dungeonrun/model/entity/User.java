@@ -1,12 +1,18 @@
 package edu.cnm.deepdive.dungeonrun.model.entity;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -44,6 +50,7 @@ public class User {
   @Temporal(TemporalType.TIMESTAMP)
   @Column(nullable = false)
   private Date updated;
+  //possibly make connected?
 
   @NonNull
   @Column(nullable = false, updatable = false,unique = true)
@@ -52,6 +59,11 @@ public class User {
   @NonNull
   @Column(nullable = false)
   private String name;
+
+  @NonNull
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OrderBy("difficulty DESC, endTime DESC")
+  private final List<Level> levels = new LinkedList<>();
 
   @NonNull
   public UUID getId() {

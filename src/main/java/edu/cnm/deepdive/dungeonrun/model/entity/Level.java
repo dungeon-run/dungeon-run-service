@@ -1,11 +1,15 @@
 package edu.cnm.deepdive.dungeonrun.model.entity;
 
 import java.util.Date;
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -14,23 +18,26 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.lang.NonNull;
 
-@SuppressWarnings("JpaDataSourceORMInspection")
+@SuppressWarnings({"JpaDataSourceORMInspection"})
 @Entity
 @Table(
-    name = "level_id",
     indexes = {
-        @Index(columnList = "startTime"),
-        @Index(columnList = "endTime"),
+        @Index(columnList = "difficulty, endTime"),
     }
 )
 public class Level {
 
   @NonNull
   @Id
-  @GeneratedValue(generator = "long")
-  @GenericGenerator(name = "long", strategy = "long")
+  @GeneratedValue(generator = "uuid")
+  @GenericGenerator(name = "uuid2", strategy = "uuid2")
   @Column(name = "level_id", nullable = false, updatable = false, columnDefinition = "CHAR(16) FOR BIT DATA")
-  private long id;
+  private UUID id;
+
+  @NonNull
+  @ManyToOne (optional = false)
+  @JoinColumn(name = "user_id", nullable = false, updatable = false)
+  private User user;
 
   @NonNull
   @CreationTimestamp
@@ -41,19 +48,17 @@ public class Level {
   @NonNull
   @UpdateTimestamp
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(nullable = false)
+  @Column(nullable = false, updatable = false)
   private Date endTime;
 
-  @NonNull
-  @Column(nullable = false, updatable = false,unique = true)
+  @Column(nullable = false, updatable = false)
   private int timeGiven;
 
-  @NonNull
-  @Column(nullable = false)
+  @Column(nullable = false, updatable = false)
   private int difficulty;
 
   @NonNull
-  public long getId() {
+  public UUID getId() {
     return id;
   }
 
