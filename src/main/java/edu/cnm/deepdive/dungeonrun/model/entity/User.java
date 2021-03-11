@@ -79,6 +79,10 @@ public class User {
     return connected;
   }
 
+  public void setConnected(@NonNull Date connected) {
+    this.connected = connected;
+  }
+
   @NonNull
   public String getOauthKey() {
     return oauthKey;
