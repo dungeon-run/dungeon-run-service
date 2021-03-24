@@ -1,6 +1,7 @@
 spring.datasource.url=jdbc:derby:dungeon_run_db;create=true;collation=TERRITORY_BASED:PRIMARY
 spring.jpa.database-platform=org.hibernate.dialect.DerbyTenSevenDialect
 
+
 spring.jpa.hibernate.ddl-auto=update
 
 #spring.jpa.properties.javax.persistence.schema-generation.create-source=metadata
