@@ -35,3 +35,5 @@ derby.log
 ### OS X ###
 # - metadata
 .DS_Store
+ddl.sql
+
