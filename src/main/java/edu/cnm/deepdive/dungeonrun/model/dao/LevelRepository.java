@@ -9,3 +9,4 @@ public interface LevelRepository extends JpaRepository<Level, UUID> {
   Iterable<Level> getAllByOrderByCreatedDesc();
 
 }
+

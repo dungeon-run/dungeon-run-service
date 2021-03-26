@@ -57,9 +57,20 @@ public class Level {
   @Column(nullable = false, updatable = false)
   private int difficulty;
 
+  private boolean completed;
+
   @NonNull
   public UUID getId() {
     return id;
+  }
+
+  @NonNull
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(@NonNull User user) {
+    this.user = user;
   }
 
   @NonNull
@@ -88,5 +99,13 @@ public class Level {
 
   public void setDifficulty(@NonNull int difficulty) {
     this.difficulty = difficulty;
+  }
+
+  public boolean isCompleted() {
+    return completed;
+  }
+
+  public void setCompleted(boolean completed) {
+    this.completed = completed;
   }
 }
