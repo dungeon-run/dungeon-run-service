@@ -75,6 +75,11 @@ public class User {
   }
 
   @NonNull
+  public List<Level> getLevels() {
+    return levels;
+  }
+
+  @NonNull
   public Date getConnected() {
     return connected;
   }

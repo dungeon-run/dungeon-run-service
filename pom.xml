@@ -13,9 +13,9 @@
   </parent>
 
   <groupId>edu.cnm.deepdive</groupId>
-  <artifactId>dungeon-run</artifactId>
+  <artifactId>dungeon-run-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>dungeon-run</name>
+  <name>dungeon-run-service</name>
   <description>Server-based puzzle maze application</description>
 
   <properties>

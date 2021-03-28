@@ -48,7 +48,7 @@ public class Level {
   @NonNull
   @UpdateTimestamp
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(nullable = false, updatable = false)
+  @Column(nullable = false)
   private Date endTime;
 
   @Column(nullable = false, updatable = false)

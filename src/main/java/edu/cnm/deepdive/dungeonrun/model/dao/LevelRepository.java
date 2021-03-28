@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LevelRepository extends JpaRepository<Level, UUID> {
 
-  Iterable<Level> getAllByOrderByCreatedDesc();
+  Iterable<Level> getAllByOrderByDifficultyDesc();
+
+  //TODO Discuss how we want the query for this to show.
 
 }
 

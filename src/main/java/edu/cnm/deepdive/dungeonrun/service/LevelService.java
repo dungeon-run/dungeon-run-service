@@ -19,7 +19,7 @@ public class LevelService {
   }
 
   public Iterable<Level> list() {
-    return levelRepository.getAllByOrderByCreatedDesc();
+    return levelRepository.getAllByOrderByDifficultyDesc();
   }
 
   public Level save(@NonNull Level level) {
