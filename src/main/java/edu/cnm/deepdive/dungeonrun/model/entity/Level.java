@@ -46,14 +46,16 @@ public class Level {
   private Date startTime;
 
   @NonNull
-  @UpdateTimestamp
+  @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @Column(nullable = false)
   private Date endTime;
 
+  @NonNull
   @Column(nullable = false, updatable = false)
   private int timeGiven;
 
+  @NonNull
   @Column(nullable = false, updatable = false)
   private int difficulty;
 
