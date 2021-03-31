@@ -18,6 +18,12 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.lang.NonNull;
 
+/**
+ * Level entity to hold the database of levels generated and completed.
+ * Indexes for difficulty and endTime will be indexed since this is a metric
+ * that will be used for the implementation of leaderboards.
+ */
+
 @SuppressWarnings({"JpaDataSourceORMInspection"})
 @Entity
 @Table(
@@ -26,7 +32,9 @@ import org.springframework.lang.NonNull;
     }
 )
 public class Level {
-
+/**
+ * Generates the UUID for levels. Levels are to be randomly generated each time a new game is started.
+ **/
   @NonNull
   @Id
   @GeneratedValue(generator = "uuid")
@@ -34,79 +42,131 @@ public class Level {
   @Column(name = "level_id", nullable = false, updatable = false, columnDefinition = "CHAR(16) FOR BIT DATA")
   private UUID id;
 
+  /**
+   * There may be many levels associated to one User.
+   */
   @NonNull
   @ManyToOne (optional = false)
   @JoinColumn(name = "user_id", nullable = false, updatable = false)
   private User user;
 
+  /**
+   * When a new level is generated, a time stamp will generate with it.
+   */
   @NonNull
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @Column(nullable = false, updatable = false)
   private Date startTime;
 
+  /**
+   * When the level is completed successfully an endTime stamp will be generated.
+   * The endTime will be used against the time given to determine the users ranking in the leaderboard.
+   */
   @NonNull
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @Column(nullable = false)
   private Date endTime;
 
+  /**
+   * Each level generated will have a set amount of time given depending on difficulty set.
+   */
   @NonNull
   @Column(nullable = false, updatable = false)
   private int timeGiven;
 
+  /**
+   * Difficulty will be a range starting from 1-20.
+   */
   @NonNull
   @Column(nullable = false, updatable = false)
   private int difficulty;
 
+  /**
+   * When the level is completed successfully, it will receive a True boolean.
+   */
   private boolean completed;
 
+  /**
+   * Receives the id for the generated level.
+   */
   @NonNull
   public UUID getId() {
     return id;
   }
 
+  /**
+   * receives the user from the user class.
+   */
   @NonNull
   public User getUser() {
     return user;
   }
 
+  /**
+   * to be used to setUser when needed
+   */
   public void setUser(@NonNull User user) {
     this.user = user;
   }
 
+  /**
+   * Returns the generated start time for the level.
+   */
   @NonNull
   public Date getStartTime() {
     return startTime;
   }
 
+  /**
+   * Returns the generated end time for the level when completed.
+   */
   @NonNull
   public Date getEndTime() {
     return endTime;
   }
 
+  /**
+   * Returns the timeGiven which will be based on difficulty of level.
+   */
   @NonNull
   public int getTimeGiven() {
     return timeGiven;
   }
 
+  /**
+   * Will setTimeGiven when user starts a level and setTimeGiven will be based on difficulty of level.
+   */
   public void setTimeGiven(@NonNull int timeGiven) {
     this.timeGiven = timeGiven;
   }
 
+  /**
+   * Receives the difficulty chosen from the user.
+   */
   @NonNull
   public int getDifficulty() {
     return difficulty;
   }
 
+  /**
+   * sets the difficulty in place when user starts level.
+   */
   public void setDifficulty(@NonNull int difficulty) {
     this.difficulty = difficulty;
   }
 
+  /**
+   * Will return true when level isCompleted.
+   */
   public boolean isCompleted() {
     return completed;
   }
 
+  /**
+   *Will set the boolean upon completion.
+   */
   public void setCompleted(boolean completed) {
     this.completed = completed;
   }

@@ -21,6 +21,11 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.lang.NonNull;
 
+/**
+ * User Entity Class for database.
+ * created and connected will be indexed for a faster query.
+ */
+
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(
@@ -32,76 +37,110 @@ import org.springframework.lang.NonNull;
 )
 public class User {
 
+  /**
+   * a uuid will be generated for each user id.
+   */
   @NonNull
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid2", strategy = "uuid2")
   @Column(name = "user_id", nullable = false, updatable = false, columnDefinition = "CHAR(16) FOR BIT DATA")
   private UUID id;
-
+  /**
+   * A timestamp will be created each time a new user is created.
+   */
   @NonNull
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @Column(nullable = false, updatable = false)
   private Date created;
-
+  /**
+   * The timestamp will update each time a user reconnects/logs in to the server.
+   */
   @NonNull
   @UpdateTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @Column(nullable = false)
   private Date connected;
-
+  /**
+   * oauthKey allows the server to recognize the user is the same when logging in.
+   */
   @NonNull
   @Column(nullable = false, updatable = false,unique = true)
   private String oauthKey;
-
+  /**
+   * A user will be able to set a username to display when using the app and for the leaderboards.
+   */
   @NonNull
   @Column(nullable = false)
   private String name;
-
+  /**
+   * User and Level have a one to many relationship. One user can access many levels.
+   */
   @NonNull
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   @OrderBy("difficulty DESC, endTime DESC")
   private final List<Level> levels = new LinkedList<>();
 
+  /**
+   *Returns the user id.
+   */
   @NonNull
   public UUID getId() {
     return id;
   }
 
+  /**
+   * Returns the created timestamp when id is generated for the first time.
+   */
   @NonNull
   public Date getCreated() {
     return created;
   }
-
+  /**
+   * returns the levels attached with id.
+   */
   @NonNull
   public List<Level> getLevels() {
     return levels;
   }
-
+  /**
+   * Returns the updated timestamp when user is reconnected.
+   */
   @NonNull
   public Date getConnected() {
     return connected;
   }
-
+  /**
+   *Sets the updated timestamp.
+   */
   public void setConnected(@NonNull Date connected) {
     this.connected = connected;
   }
-
+  /**
+   * Returns the generated oauthKey.
+   */
   @NonNull
   public String getOauthKey() {
     return oauthKey;
   }
-
+  /**
+   * sets the oauthKey when needed.
+   */
   public void setOauthKey(@NonNull String oauthKey) {
     this.oauthKey = oauthKey;
   }
-
+  /**
+   * Gets the name the user has set.
+   */
   @NonNull
   public String getName() {
     return name;
   }
 
+  /**
+   *Sets the name the user has set.
+   */
   public void setName(@NonNull String name) {
     this.name = name;
   }
