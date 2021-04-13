@@ -25,6 +25,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
@@ -42,6 +43,7 @@ import org.springframework.stereotype.Component;
         @Index(columnList = "connected"),
     }
 )
+@Component
 public class User {
 
   private static EntityLinks entityLinks;
@@ -164,17 +166,18 @@ public class User {
     this.name = name;
   }
 
-//  public URI getHref() {
-//    return (id != null) ? entityLinks.linkForItemResource(User.class, id).toUri() : null;
-//  }
-//
-//  @Autowired
-//  public static void setEntityLinks(EntityLinks entityLinks) {
-//    User.entityLinks = entityLinks;
-//  }
-//
-//  @PostConstruct
-//  private void initHateoas() {
-//    entityLinks.hashCode();
-//  }
+  public URI getHref() {
+    return (id != null) ? entityLinks.linkForItemResource(User.class, id).toUri() : null;
+  }
+
+  @Autowired
+  public static void setEntityLinks(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") EntityLinks entityLinks) {
+    User.entityLinks = entityLinks;
+  }
+
+  @PostConstruct
+  private void initHateoas() {
+    //noinspection ResultOfMethodCallIgnored
+    entityLinks.toString();
+  }
 }

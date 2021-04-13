@@ -12,13 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.lang.NonNull;
@@ -33,6 +31,7 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings({"JpaDataSourceORMInspection"})
 @Entity
 @Table(
+    name = "game_level",
     indexes = {
         @Index(columnList = "difficulty, endTime"),
     }
@@ -42,6 +41,7 @@ import org.springframework.stereotype.Component;
         "id", "startTime", "endTime"},
     allowGetters = true, ignoreUnknown = true
 )
+@Component
 public class Level {
 
   private static EntityLinks entityLinks;
@@ -184,18 +184,18 @@ public class Level {
     this.completed = completed;
   }
 
-//  public URI getHref() {
-//    return (id != null) ? entityLinks.linkForItemResource(Level.class, id).toUri() : null;
-//  }
-//
-//  @SuppressWarnings("SpringJavaAutowiredMembersInspection")
-//  @Autowired
-//  public static void setEntityLinks(EntityLinks entityLinks) {
-//    Level.entityLinks = entityLinks;
-//  }
-//
-//  @PostConstruct
-//  public void initHateoas() {
-//    entityLinks.toString();
-//  }
+  public URI getHref() {
+    return (id != null) ? entityLinks.linkForItemResource(Level.class, id).toUri() : null;
+  }
+
+  @Autowired
+  public static void setEntityLinks(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") EntityLinks entityLinks) {
+    Level.entityLinks = entityLinks;
+  }
+
+  @PostConstruct
+  private void initHateoas() {
+    //noinspection ResultOfMethodCallIgnored
+    entityLinks.toString();
+  }
 }
