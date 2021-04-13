@@ -36,7 +36,6 @@ public class LevelController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Level> post(@RequestBody Level level, Authentication auth) {
     level = levelService.newLevel(level, (User) auth.getPrincipal());
-//    level.setUser((User) auth.getPrincipal());
       return ResponseEntity.created(level.getHref()).body(level);
   }
 
