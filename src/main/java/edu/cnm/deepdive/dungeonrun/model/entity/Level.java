@@ -1,6 +1,7 @@
 package edu.cnm.deepdive.dungeonrun.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import edu.cnm.deepdive.dungeonrun.configuration.Beans;
 import java.net.URI;
 import java.util.Date;
 import java.util.UUID;
@@ -41,10 +42,7 @@ import org.springframework.stereotype.Component;
         "id", "startTime", "endTime"},
     allowGetters = true, ignoreUnknown = true
 )
-@Component
 public class Level {
-
-  private static EntityLinks entityLinks;
 
 /**
  * Generates the UUID for levels. Levels are to be randomly generated each time a new game is started.
@@ -185,17 +183,7 @@ public class Level {
   }
 
   public URI getHref() {
+    EntityLinks entityLinks = Beans.bean(EntityLinks.class);
     return (id != null) ? entityLinks.linkForItemResource(Level.class, id).toUri() : null;
-  }
-
-  @Autowired
-  public static void setEntityLinks(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") EntityLinks entityLinks) {
-    Level.entityLinks = entityLinks;
-  }
-
-  @PostConstruct
-  private void initHateoas() {
-    //noinspection ResultOfMethodCallIgnored
-    entityLinks.toString();
   }
 }

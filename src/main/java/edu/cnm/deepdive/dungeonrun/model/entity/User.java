@@ -2,6 +2,7 @@ package edu.cnm.deepdive.dungeonrun.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import edu.cnm.deepdive.dungeonrun.configuration.Beans;
 import java.net.URI;
 import java.util.Date;
 import java.util.LinkedList;
@@ -43,10 +44,7 @@ import org.springframework.stereotype.Component;
         @Index(columnList = "connected"),
     }
 )
-@Component
 public class User {
-
-  private static EntityLinks entityLinks;
 
   /**
    * a uuid will be generated for each user id.
@@ -167,17 +165,7 @@ public class User {
   }
 
   public URI getHref() {
+    EntityLinks entityLinks = Beans.bean(EntityLinks.class);
     return (id != null) ? entityLinks.linkForItemResource(User.class, id).toUri() : null;
-  }
-
-  @Autowired
-  public static void setEntityLinks(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") EntityLinks entityLinks) {
-    User.entityLinks = entityLinks;
-  }
-
-  @PostConstruct
-  private void initHateoas() {
-    //noinspection ResultOfMethodCallIgnored
-    entityLinks.toString();
   }
 }
