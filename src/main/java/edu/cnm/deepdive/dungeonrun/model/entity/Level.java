@@ -16,6 +16,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.lang.NonNull;
 
 /**
@@ -32,6 +33,8 @@ import org.springframework.lang.NonNull;
     }
 )
 public class Level {
+
+  private static EntityLinks entityLinks;
 /**
  * Generates the UUID for levels. Levels are to be randomly generated each time a new game is started.
  **/
