@@ -32,7 +32,6 @@ public class LevelController {
     return levelService.list();
   }
 
-  // TODO get hateoas set up
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   public Level post(@RequestBody Level level, Authentication auth) {
     level.setUser((User) auth.getPrincipal());

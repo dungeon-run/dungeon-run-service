@@ -1,9 +1,11 @@
 package edu.cnm.deepdive.dungeonrun.model.entity;
 
+import java.net.URI;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+import javax.annotation.PostConstruct;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +21,8 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.lang.NonNull;
 
 /**
@@ -36,6 +40,8 @@ import org.springframework.lang.NonNull;
     }
 )
 public class User {
+
+  private static EntityLinks entityLinks;
 
   /**
    * a uuid will be generated for each user id.
@@ -143,5 +149,19 @@ public class User {
    */
   public void setName(@NonNull String name) {
     this.name = name;
+  }
+
+  public URI getHref() {
+    return (id != null) ? entityLinks.linkForItemResource(User.class, id).toUri() : null;
+  }
+
+  @Autowired
+  public static void setEntityLinks(EntityLinks entityLinks) {
+    User.entityLinks = entityLinks;
+  }
+
+  @PostConstruct
+  private void initHateoas() {
+    entityLinks.hashCode();
   }
 }
