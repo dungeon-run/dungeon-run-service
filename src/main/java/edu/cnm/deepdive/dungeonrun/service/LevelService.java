@@ -17,9 +17,13 @@ public class LevelService {
   public Optional<Level> get(@NonNull UUID id) {
     return levelRepository.findById(id);
   }
+//
+//  public Iterable<Level> list() {
+//    return levelRepository.getAllByOrderByDifficultyDesc();
+//  }
 
-  public Iterable<Level> list() {
-    return levelRepository.getAllByOrderByDifficultyDesc();
+  public Iterable<Level> finalList() {
+    return levelRepository.getAllByOrderByDifficulty();
   }
 
   public Level save(@NonNull Level level) {

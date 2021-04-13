@@ -10,7 +10,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface LevelRepository extends JpaRepository<Level, UUID> {
 
-  Iterable<Level> getAllByOrderByDifficultyDesc();
+//  Iterable<Level> getAllByOrderByDifficultyDesc();
+
+  Iterable<Level> getAllByOrderByDifficulty();
 
   //TODO Discuss how we want the query for this to show.
   // Need to add to receive endTime in here too ?
