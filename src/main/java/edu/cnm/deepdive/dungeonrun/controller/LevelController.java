@@ -23,15 +23,10 @@ public class LevelController {
 
   private final LevelService levelService;
 
-  public LevelController() {
-    levelService = null;
+  public LevelController(LevelService levelService) {
+    this.levelService = levelService;
   }
   // TODO Add a leaderboard version
-//  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//  public Iterable<Level> list(Authentication auth) {
-//    return levelService.list();
-//  }
-
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public Iterable<Level> finalList(Authentication auth) {
     return levelService.finalList();
@@ -40,8 +35,10 @@ public class LevelController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   public Level post(@RequestBody Level level, Authentication auth) {
-    level.setUser((User) auth.getPrincipal());
-    return levelService.save(level);
+    return levelService.newLevel(level, (User) auth.getPrincipal());
+//    level.setUser((User) auth.getPrincipal());
+//      return ResponseEntity.created(level.getHref()).body(level);
+
   }
 
   @PutMapping(value = "/{id}/completed", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -1,5 +1,6 @@
 package edu.cnm.deepdive.dungeonrun.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.net.URI;
 import java.util.Date;
 import java.util.UUID;
@@ -21,6 +22,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
 
 /**
  * Level entity to hold the database of levels generated and completed.
@@ -35,6 +37,11 @@ import org.springframework.lang.NonNull;
         @Index(columnList = "difficulty, endTime"),
     }
 )
+@JsonIgnoreProperties(
+    value = {
+        "id", "startTime", "endTime"},
+    allowGetters = true, ignoreUnknown = true
+)
 public class Level {
 
   private static EntityLinks entityLinks;
@@ -42,7 +49,6 @@ public class Level {
 /**
  * Generates the UUID for levels. Levels are to be randomly generated each time a new game is started.
  **/
-  @NonNull
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid2", strategy = "uuid2")
@@ -178,18 +184,18 @@ public class Level {
     this.completed = completed;
   }
 
-  public URI getHref() {
-    return (id != null) ? entityLinks.linkForItemResource(Level.class, id).toUri() : null;
-  }
-
-  @SuppressWarnings("SpringJavaAutowiredMembersInspection")
-  @Autowired
-  public static void setEntityLinks(EntityLinks entityLinks) {
-    Level.entityLinks = entityLinks;
-  }
-
-  @PostConstruct
-  public void initHateoas() {
-    entityLinks.hashCode();
-  }
+//  public URI getHref() {
+//    return (id != null) ? entityLinks.linkForItemResource(Level.class, id).toUri() : null;
+//  }
+//
+//  @SuppressWarnings("SpringJavaAutowiredMembersInspection")
+//  @Autowired
+//  public static void setEntityLinks(EntityLinks entityLinks) {
+//    Level.entityLinks = entityLinks;
+//  }
+//
+//  @PostConstruct
+//  public void initHateoas() {
+//    entityLinks.toString();
+//  }
 }

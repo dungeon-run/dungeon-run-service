@@ -2,10 +2,13 @@ package edu.cnm.deepdive.dungeonrun.service;
 
 import edu.cnm.deepdive.dungeonrun.model.dao.LevelRepository;
 import edu.cnm.deepdive.dungeonrun.model.entity.Level;
+import edu.cnm.deepdive.dungeonrun.model.entity.User;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Service;
 
+@Service
 public class LevelService {
 
   private final LevelRepository levelRepository;
@@ -17,10 +20,11 @@ public class LevelService {
   public Optional<Level> get(@NonNull UUID id) {
     return levelRepository.findById(id);
   }
-//
-//  public Iterable<Level> list() {
-//    return levelRepository.getAllByOrderByDifficultyDesc();
-//  }
+
+  public Level newLevel(Level level, User user) {
+    level.setUser(user);
+    return levelRepository.save(level);
+  }
 
   public Iterable<Level> finalList() {
     return levelRepository.getAllByOrderByDifficulty();

@@ -1,5 +1,7 @@
 package edu.cnm.deepdive.dungeonrun.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.net.URI;
 import java.util.Date;
 import java.util.LinkedList;
@@ -24,6 +26,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
 
 /**
  * User Entity Class for database.
@@ -46,12 +49,12 @@ public class User {
   /**
    * a uuid will be generated for each user id.
    */
-  @NonNull
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid2", strategy = "uuid2")
   @Column(name = "user_id", nullable = false, updatable = false, columnDefinition = "CHAR(16) FOR BIT DATA")
   private UUID id;
+
   /**
    * A timestamp will be created each time a new user is created.
    */
@@ -60,6 +63,7 @@ public class User {
   @Temporal(TemporalType.TIMESTAMP)
   @Column(nullable = false, updatable = false)
   private Date created;
+
   /**
    * The timestamp will update each time a user reconnects/logs in to the server.
    */
@@ -68,24 +72,27 @@ public class User {
   @Temporal(TemporalType.TIMESTAMP)
   @Column(nullable = false)
   private Date connected;
+
   /**
    * oauthKey allows the server to recognize the user is the same when logging in.
    */
   @NonNull
   @Column(nullable = false, updatable = false,unique = true)
   private String oauthKey;
+
   /**
    * A user will be able to set a username to display when using the app and for the leaderboards.
    */
   @NonNull
   @Column(nullable = false)
   private String name;
+
   /**
    * User and Level have a one to many relationship. One user can access many levels.
    */
+  @JsonIgnore
   @NonNull
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-  @OrderBy("difficulty DESC, endTime DESC")
   private final List<Level> levels = new LinkedList<>();
 
   /**
@@ -103,6 +110,7 @@ public class User {
   public Date getCreated() {
     return created;
   }
+
   /**
    * returns the levels attached with id.
    */
@@ -110,6 +118,7 @@ public class User {
   public List<Level> getLevels() {
     return levels;
   }
+
   /**
    * Returns the updated timestamp when user is reconnected.
    */
@@ -117,12 +126,14 @@ public class User {
   public Date getConnected() {
     return connected;
   }
+
   /**
    *Sets the updated timestamp.
    */
   public void setConnected(@NonNull Date connected) {
     this.connected = connected;
   }
+
   /**
    * Returns the generated oauthKey.
    */
@@ -130,12 +141,14 @@ public class User {
   public String getOauthKey() {
     return oauthKey;
   }
+
   /**
    * sets the oauthKey when needed.
    */
   public void setOauthKey(@NonNull String oauthKey) {
     this.oauthKey = oauthKey;
   }
+
   /**
    * Gets the name the user has set.
    */
@@ -151,17 +164,17 @@ public class User {
     this.name = name;
   }
 
-  public URI getHref() {
-    return (id != null) ? entityLinks.linkForItemResource(User.class, id).toUri() : null;
-  }
-
-  @Autowired
-  public static void setEntityLinks(EntityLinks entityLinks) {
-    User.entityLinks = entityLinks;
-  }
-
-  @PostConstruct
-  private void initHateoas() {
-    entityLinks.hashCode();
-  }
+//  public URI getHref() {
+//    return (id != null) ? entityLinks.linkForItemResource(User.class, id).toUri() : null;
+//  }
+//
+//  @Autowired
+//  public static void setEntityLinks(EntityLinks entityLinks) {
+//    User.entityLinks = entityLinks;
+//  }
+//
+//  @PostConstruct
+//  private void initHateoas() {
+//    entityLinks.hashCode();
+//  }
 }

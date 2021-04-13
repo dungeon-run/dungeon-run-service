@@ -12,7 +12,7 @@ import org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType
  * within an allotted amount of time based on the level of difficulty.
  */
 @SpringBootApplication
-@EnableHypermediaSupport(type = HypermediaType.HAL)
+@EnableHypermediaSupport(type = {HypermediaType.HAL})
 public class DungeonRunApplication {
 
   public static void main(String[] args) {
