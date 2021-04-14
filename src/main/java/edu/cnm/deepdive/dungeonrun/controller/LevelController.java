@@ -27,10 +27,9 @@ public class LevelController {
     this.levelService = levelService;
   }
 
-  // TODO Add a leaderboard version
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public Iterable<Level> finalList(Authentication auth) {
-    return levelService.finalList();
+  public Iterable<Level> leaderList(Authentication auth) {
+    return levelService.leaderList();
   }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

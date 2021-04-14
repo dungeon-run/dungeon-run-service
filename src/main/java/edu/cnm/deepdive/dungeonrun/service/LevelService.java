@@ -3,6 +3,7 @@ package edu.cnm.deepdive.dungeonrun.service;
 import edu.cnm.deepdive.dungeonrun.model.dao.LevelRepository;
 import edu.cnm.deepdive.dungeonrun.model.entity.Level;
 import edu.cnm.deepdive.dungeonrun.model.entity.User;
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.lang.NonNull;
@@ -30,9 +31,15 @@ public class LevelService {
     return levelRepository.getAllByOrderByDifficulty();
   }
 
+  public Iterable<Level> leaderList() {
+    Date endTime = new Date();
+    int difficulty = 0;
+    return levelRepository.getAllByCompletedIsTrueAndEndTimeAndDifficultyOrderByEndTime(
+        endTime, difficulty);
+  }
+
   public Level save(@NonNull Level level) {
     return levelRepository.save(level);
   }
-
 
 }
