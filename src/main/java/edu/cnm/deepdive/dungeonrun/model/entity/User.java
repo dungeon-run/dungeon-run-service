@@ -71,7 +71,8 @@ public class User {
    * oauthKey allows the server to recognize the user is the same when logging in.
    */
   @NonNull
-  @Column(nullable = false, updatable = false,unique = true)
+  @Column(nullable = false, updatable = false, unique = true)
+  @JsonIgnore
   private String oauthKey;
 
   /**

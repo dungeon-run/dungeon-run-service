@@ -13,7 +13,5 @@ public interface AttemptRepository extends JpaRepository<Attempt, UUID> {
 
   Iterable<Attempt> getAllByDifficultyAndCompletedIsTrueOrderByTimeElapsedAsc(int difficulty);
 
-  // TODO getAllByDifficultyAndCompletedIsTrueOrderByTimeElapsedAsc(int difficulty)
-
 }
 

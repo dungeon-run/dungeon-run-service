@@ -26,8 +26,7 @@ public class AttemptService {
     return attemptRepository.save(attempt);
   }
 
-  public Iterable<Attempt> leaderList() {
-    int difficulty = 0;
+  public Iterable<Attempt> leaderList(int difficulty) {
     return attemptRepository.getAllByDifficultyAndCompletedIsTrueOrderByTimeElapsedAsc(difficulty);
   }
 

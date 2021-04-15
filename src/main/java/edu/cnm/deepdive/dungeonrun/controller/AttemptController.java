@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/levels")
+@RequestMapping("/attempts")
 @ExposesResourceFor(Attempt.class)
 public class AttemptController {
 
@@ -28,8 +29,8 @@ public class AttemptController {
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public Iterable<Attempt> leaderList(Authentication auth) {
-    return attemptService.leaderList();
+  public Iterable<Attempt> leaderList(@RequestParam int difficulty, Authentication auth) {
+    return attemptService.leaderList(difficulty);
   }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

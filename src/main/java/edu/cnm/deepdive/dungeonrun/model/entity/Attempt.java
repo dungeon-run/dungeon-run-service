@@ -70,10 +70,7 @@ public class Attempt {
    * When the level is completed successfully an endTime stamp will be generated.
    * The endTime will be used against the time given to determine the users ranking in the leaderboard.
    */
-  @NonNull
-  @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(nullable = false)
   private Date endTime;
 
   /**
@@ -133,11 +130,13 @@ public class Attempt {
   /**
    * Returns the generated end time for the level when completed.
    */
-  @NonNull
   public Date getEndTime() {
     return endTime;
   }
 
+  public void setEndTime(Date endTime) {
+    this.endTime = endTime;
+  }
   /**
    * Returns the timeGiven which will be based on difficulty of level.
    */
