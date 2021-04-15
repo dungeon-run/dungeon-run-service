@@ -1,7 +1,7 @@
 package edu.cnm.deepdive.dungeonrun.service;
 
 import edu.cnm.deepdive.dungeonrun.model.dao.LevelRepository;
-import edu.cnm.deepdive.dungeonrun.model.entity.Level;
+import edu.cnm.deepdive.dungeonrun.model.entity.Attempt;
 import edu.cnm.deepdive.dungeonrun.model.entity.User;
 import java.util.Date;
 import java.util.Optional;
@@ -18,28 +18,22 @@ public class LevelService {
     this.levelRepository = levelRepository;
   }
 
-  public Optional<Level> get(@NonNull UUID id) {
+  public Optional<Attempt> get(@NonNull UUID id) {
     return levelRepository.findById(id);
   }
 
-  public Level newLevel(Level level, User user) {
-    level.setUser(user);
-    return levelRepository.save(level);
+  public Attempt newLevel(Attempt attempt, User user) {
+    attempt.setUser(user);
+    return levelRepository.save(attempt);
   }
 
-  public Iterable<Level> finalList() {
-    return levelRepository.getAllByOrderByDifficulty();
-  }
-
-  public Iterable<Level> leaderList() {
-    Date endTime = new Date();
+  public Iterable<Attempt> leaderList() {
     int difficulty = 0;
-    return levelRepository.getAllByCompletedIsTrueAndEndTimeAndDifficultyOrderByEndTime(
-        endTime, difficulty);
+    return levelRepository.getAllByDifficultyAndCompletedIsTrueOrderByTimeElapsedAsc(difficulty);
   }
 
-  public Level save(@NonNull Level level) {
-    return levelRepository.save(level);
+  public Attempt save(@NonNull Attempt attempt) {
+    return levelRepository.save(attempt);
   }
 
 }

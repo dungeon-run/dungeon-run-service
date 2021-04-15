@@ -5,7 +5,6 @@ import edu.cnm.deepdive.dungeonrun.configuration.Beans;
 import java.net.URI;
 import java.util.Date;
 import java.util.UUID;
-import javax.annotation.PostConstruct;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,10 +17,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Component;
 
 /**
  * Level entity to hold the database of levels generated and completed.
@@ -42,7 +39,7 @@ import org.springframework.stereotype.Component;
         "id", "startTime", "endTime"},
     allowGetters = true, ignoreUnknown = true
 )
-public class Level {
+public class Attempt {
 
 /**
  * Generates the UUID for levels. Levels are to be randomly generated each time a new game is started.
@@ -93,6 +90,10 @@ public class Level {
   @NonNull
   @Column(nullable = false, updatable = false)
   private int difficulty;
+
+  @NonNull
+  @Column(nullable = false, updatable = false)
+  private long timeElapsed;
 
   /**
    * When the level is completed successfully, it will receive a True boolean.
@@ -168,6 +169,14 @@ public class Level {
     this.difficulty = difficulty;
   }
 
+  public long getTimeElapsed() {
+    return timeElapsed;
+  }
+
+  public void setTimeElapsed(long timeElapsed) {
+    this.timeElapsed = timeElapsed;
+  }
+
   /**
    * Will return true when level isCompleted.
    */
@@ -184,6 +193,6 @@ public class Level {
 
   public URI getHref() {
     EntityLinks entityLinks = Beans.bean(EntityLinks.class);
-    return (id != null) ? entityLinks.linkForItemResource(Level.class, id).toUri() : null;
+    return (id != null) ? entityLinks.linkForItemResource(Attempt.class, id).toUri() : null;
   }
 }

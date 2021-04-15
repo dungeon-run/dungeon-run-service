@@ -1,6 +1,6 @@
 package edu.cnm.deepdive.dungeonrun.model.dao;
 
-import edu.cnm.deepdive.dungeonrun.model.entity.Level;
+import edu.cnm.deepdive.dungeonrun.model.entity.Attempt;
 import java.util.Date;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,12 +9,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * LevelRepository will allow us to generate the database in the order we wish to see it.
  * In this case, Ordering from difficulty descending.
  */
-public interface LevelRepository extends JpaRepository<Level, UUID> {
+public interface LevelRepository extends JpaRepository<Attempt, UUID> {
 
-  Iterable<Level> getAllByCompletedIsTrueAndEndTimeAndDifficultyOrderByEndTime(Date endTime,
-      int difficulty);
+  Iterable<Attempt> getAllByDifficultyAndCompletedIsTrueOrderByTimeElapsedAsc(int difficulty);
 
-  Iterable<Level> getAllByOrderByDifficulty();
+  // TODO getAllByDifficultyAndCompletedIsTrueOrderByTimeElapsedAsc(int difficulty)
+
+//  Iterable<Attempt> getAllByOrderByDifficulty();
 
 }
 

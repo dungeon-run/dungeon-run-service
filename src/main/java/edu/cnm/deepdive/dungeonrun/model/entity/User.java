@@ -1,14 +1,12 @@
 package edu.cnm.deepdive.dungeonrun.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.cnm.deepdive.dungeonrun.configuration.Beans;
 import java.net.URI;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
-import javax.annotation.PostConstruct;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,18 +15,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.EntityLinks;
-import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Component;
 
 /**
  * User Entity Class for database.
@@ -93,7 +87,7 @@ public class User {
   @JsonIgnore
   @NonNull
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-  private final List<Level> levels = new LinkedList<>();
+  private final List<Attempt> attempts = new LinkedList<>();
 
   /**
    *Returns the user id.
@@ -115,8 +109,8 @@ public class User {
    * returns the levels attached with id.
    */
   @NonNull
-  public List<Level> getLevels() {
-    return levels;
+  public List<Attempt> getLevels() {
+    return attempts;
   }
 
   /**

@@ -1,6 +1,6 @@
 package edu.cnm.deepdive.dungeonrun.controller;
 
-import edu.cnm.deepdive.dungeonrun.model.entity.Level;
+import edu.cnm.deepdive.dungeonrun.model.entity.Attempt;
 import edu.cnm.deepdive.dungeonrun.model.entity.User;
 import edu.cnm.deepdive.dungeonrun.service.LevelService;
 import java.util.UUID;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/levels")
-@ExposesResourceFor(Level.class)
+@ExposesResourceFor(Attempt.class)
 public class LevelController {
 
   private final LevelService levelService;
@@ -28,14 +28,14 @@ public class LevelController {
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public Iterable<Level> leaderList(Authentication auth) {
+  public Iterable<Attempt> leaderList(Authentication auth) {
     return levelService.leaderList();
   }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Level> post(@RequestBody Level level, Authentication auth) {
-    level = levelService.newLevel(level, (User) auth.getPrincipal());
-      return ResponseEntity.created(level.getHref()).body(level);
+  public ResponseEntity<Attempt> post(@RequestBody Attempt attempt, Authentication auth) {
+    attempt = levelService.newLevel(attempt, (User) auth.getPrincipal());
+      return ResponseEntity.created(attempt.getHref()).body(attempt);
   }
 
   @PutMapping(value = "/{id}/completed", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -56,7 +56,7 @@ public class LevelController {
   }
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Level get(@PathVariable UUID id, Authentication auth) {
+  public Attempt get(@PathVariable UUID id, Authentication auth) {
     return levelService
         .get(id)
         .map((level) -> level.getUser().getId().equals(((User) auth.getPrincipal()).getId())
