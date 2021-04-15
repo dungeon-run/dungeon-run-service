@@ -29,7 +29,6 @@ import org.springframework.lang.NonNull;
 @SuppressWarnings({"JpaDataSourceORMInspection"})
 @Entity
 @Table(
-    name = "game_level",
     indexes = {
         @Index(columnList = "difficulty, endTime"),
     }
@@ -47,7 +46,7 @@ public class Attempt {
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid2", strategy = "uuid2")
-  @Column(name = "level_id", nullable = false, updatable = false, columnDefinition = "CHAR(16) FOR BIT DATA")
+  @Column(name = "attempt_id", nullable = false, updatable = false, columnDefinition = "CHAR(16) FOR BIT DATA")
   private UUID id;
 
   /**

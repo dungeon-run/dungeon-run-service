@@ -109,7 +109,7 @@ public class User {
    * returns the levels attached with id.
    */
   @NonNull
-  public List<Attempt> getLevels() {
+  public List<Attempt> getAttempts() {
     return attempts;
   }
 

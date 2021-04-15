@@ -9,13 +9,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * LevelRepository will allow us to generate the database in the order we wish to see it.
  * In this case, Ordering from difficulty descending.
  */
-public interface LevelRepository extends JpaRepository<Attempt, UUID> {
+public interface AttemptRepository extends JpaRepository<Attempt, UUID> {
 
   Iterable<Attempt> getAllByDifficultyAndCompletedIsTrueOrderByTimeElapsedAsc(int difficulty);
 
   // TODO getAllByDifficultyAndCompletedIsTrueOrderByTimeElapsedAsc(int difficulty)
-
-//  Iterable<Attempt> getAllByOrderByDifficulty();
 
 }
 

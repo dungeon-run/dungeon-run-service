@@ -2,7 +2,7 @@ package edu.cnm.deepdive.dungeonrun.controller;
 
 import edu.cnm.deepdive.dungeonrun.model.entity.Attempt;
 import edu.cnm.deepdive.dungeonrun.model.entity.User;
-import edu.cnm.deepdive.dungeonrun.service.LevelService;
+import edu.cnm.deepdive.dungeonrun.service.AttemptService;
 import java.util.UUID;
 import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.http.MediaType;
@@ -19,34 +19,34 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/levels")
 @ExposesResourceFor(Attempt.class)
-public class LevelController {
+public class AttemptController {
 
-  private final LevelService levelService;
+  private final AttemptService attemptService;
 
-  public LevelController(LevelService levelService) {
-    this.levelService = levelService;
+  public AttemptController(AttemptService attemptService) {
+    this.attemptService = attemptService;
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public Iterable<Attempt> leaderList(Authentication auth) {
-    return levelService.leaderList();
+    return attemptService.leaderList();
   }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Attempt> post(@RequestBody Attempt attempt, Authentication auth) {
-    attempt = levelService.newLevel(attempt, (User) auth.getPrincipal());
+    attempt = attemptService.newAttempt(attempt, (User) auth.getPrincipal());
       return ResponseEntity.created(attempt.getHref()).body(attempt);
   }
 
   @PutMapping(value = "/{id}/completed", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   public boolean update(@PathVariable UUID id, @RequestBody(required = false) Boolean completed,
       Authentication auth) {
-    return levelService
+    return attemptService
         .get(id)
-        .map((level) -> { //replacing the current level with the updated timestamp
-          if (level.getUser().getId().equals(((User) auth.getPrincipal()).getId())) {
-            level.setCompleted((completed != null) ? completed : true);
-            return levelService.save(level)
+        .map((attempt) -> { //replacing the current level with the updated timestamp
+          if (attempt.getUser().getId().equals(((User) auth.getPrincipal()).getId())) {
+            attempt.setCompleted((completed != null) ? completed : true);
+            return attemptService.save(attempt)
                 .isCompleted(); //ensures the user completing the level is the same as the one who started it
           } else {
             return null;
@@ -57,10 +57,10 @@ public class LevelController {
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public Attempt get(@PathVariable UUID id, Authentication auth) {
-    return levelService
+    return attemptService
         .get(id)
-        .map((level) -> level.getUser().getId().equals(((User) auth.getPrincipal()).getId())
-            ? level
+        .map((attempt) -> attempt.getUser().getId().equals(((User) auth.getPrincipal()).getId())
+            ? attempt
             : null)
         .orElseThrow();
   }
