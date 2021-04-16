@@ -34,12 +34,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Value("${spring.security.oauth2.resourceserver.jwt.client-id}")
   private String clientId;
 
+  /**
+   * Security Configuration assists with gaining the authentication token for use with the server.
+   * @param converter Converts the token into a readable key for use.
+   */
   @Autowired
   public SecurityConfiguration(
       Converter<Jwt, ? extends AbstractAuthenticationToken> converter) {
     this.converter = converter;
   }
 
+  /**
+   * Configures the security for use with the service side.
+   * @param http to be used for secure connections?
+   * @throws Exception Exception is thrown when authorization is not complete.
+   */
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests((auth) -> auth.anyRequest().authenticated())
@@ -47,6 +56,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .jwtAuthenticationConverter(converter);
   }
 
+  /**
+   * TODO ASK ABOUT THIS.
+   * @return
+   */
   @Bean
   public JwtDecoder jwtDecoder() {
     NimbusJwtDecoder decoder = (NimbusJwtDecoder) JwtDecoders.fromIssuerLocation(issuerUri);
