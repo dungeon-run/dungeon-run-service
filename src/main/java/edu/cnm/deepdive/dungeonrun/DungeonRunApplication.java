@@ -15,6 +15,10 @@ import org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType
 @EnableHypermediaSupport(type = {HypermediaType.HAL})
 public class DungeonRunApplication {
 
+  /**
+   * Main class for the application for use.
+   * @param args
+   */
   public static void main(String[] args) {
     SpringApplication.run(DungeonRunApplication.class, args);
   }
