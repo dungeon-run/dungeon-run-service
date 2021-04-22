@@ -94,7 +94,7 @@ public class Attempt {
    * The time elapsed will be a metric tracked for the leaderboards.
    */
   @NonNull
-  @Column(nullable = false, updatable = false)
+  @Column(nullable = false)
   private long timeElapsed;
 
   /**

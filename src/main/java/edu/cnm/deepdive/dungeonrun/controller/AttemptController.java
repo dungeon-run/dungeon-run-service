@@ -3,6 +3,7 @@ package edu.cnm.deepdive.dungeonrun.controller;
 import edu.cnm.deepdive.dungeonrun.model.entity.Attempt;
 import edu.cnm.deepdive.dungeonrun.model.entity.User;
 import edu.cnm.deepdive.dungeonrun.service.AttemptService;
+import java.util.Date;
 import java.util.UUID;
 import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.http.MediaType;
@@ -62,20 +63,21 @@ public class AttemptController {
   /**
    * Puts the completed attempts in the body for use on the client side.
    * @param id The id of the current attempt generated.
-   * @param completed Returns true when the end of the maze is successfully reached.
+   * @param attempt Returns true when the end of the maze is successfully reached.
    * @param auth Needs the auth in order to make sure the connected user is legitimate.
    * @return Saves the attempt when it is completed for use in the leaderboard on the client side.
    */
-  @PutMapping(value = "/{id}/completed", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-  public boolean update(@PathVariable UUID id, @RequestBody(required = false) Boolean completed,
+  @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+  public Attempt update(@PathVariable UUID id, @RequestBody Attempt attempt,
       Authentication auth) {
     return attemptService
         .get(id)
-        .map((attempt) -> { //replacing the current level with the updated timestamp
-          if (attempt.getUser().getId().equals(((User) auth.getPrincipal()).getId())) {
-            attempt.setCompleted((completed != null) ? completed : true);
-            return attemptService.save(attempt)
-                .isCompleted(); //ensures the user completing the level is the same as the one who started it
+        .map((existingAttempt) -> { //replacing the current level with the updated timestamp
+          if (existingAttempt.getUser().getId().equals(((User) auth.getPrincipal()).getId())) {
+            existingAttempt.setCompleted(attempt.isCompleted());
+            existingAttempt.setEndTime(new Date());
+            existingAttempt.setTimeElapsed(attempt.getTimeElapsed());
+            return attemptService.save(existingAttempt);
           } else {
             return null;
           }
