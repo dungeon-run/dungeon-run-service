@@ -35,5 +35,5 @@ derby.log
 ### OS X ###
 # - metadata
 .DS_Store
-../dungeon-run.github.io/ddl.sql
+ddl.sql
 
