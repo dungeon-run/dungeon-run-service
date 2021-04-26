@@ -11,15 +11,16 @@ spring:
     database-platform: org.hibernate.dialect.DerbyTenSevenDialect
     hibernate:
       ddl-auto: update
-    properties:
-      javax:
-        persistence:
-          schema-generation:
-            create-source: metadata
-            scripts:
-              action: create
-              create-target: ddl.sql
+#    properties:
+#      javax:
+#        persistence:
+#          schema-generation:
+#            create-source: metadata
+#            scripts:
+#              action: create
+#              create-target: ddl.sql
 server:
-  port: 18181
+  port: 18182
   servlet:
     context-path: /dungeonrun
+  forward-headers-strategy: framework
