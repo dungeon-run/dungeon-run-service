@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -51,15 +52,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
    */
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+    http
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.authorizeRequests((auth) -> auth.anyRequest().authenticated())
         .oauth2ResourceServer().jwt()
         .jwtAuthenticationConverter(converter);
   }
 
-  /**
-   * TODO ASK ABOUT THIS.
-   * @return
-   */
   @Bean
   public JwtDecoder jwtDecoder() {
     NimbusJwtDecoder decoder = (NimbusJwtDecoder) JwtDecoders.fromIssuerLocation(issuerUri);
